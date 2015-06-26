@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PACER Court software versions</title>
+</head>
+<body>
+  <table>
+    <tr>
+      <th>Court</th>
+      <th>Software version</th>
+    </tr>
+    {% for court in all_courts %}
+      <tr>
+        <td>{{ court['court'] }}</td>
+        <td>
+          <a href="{{ court['info_link'] }}">
+            {{ court['software_version'] }}
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</body>
