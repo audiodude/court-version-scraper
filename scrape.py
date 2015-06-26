@@ -31,11 +31,11 @@ def get_courts(root, marker_name):
         court = sibling.text
         court_link = sibling.get('href')
 
-def get_all_courts():
+def get_all_courts(force=False):
   all_courts = None
   if mc:
     all_courts = mc.get('all_courts')
-  if all_courts:
+  if all_courts and not force:
     return all_courts
 
   COURT_MARKERS = ('APCTS', 'DCCTS', 'BKCTS')
@@ -55,10 +55,16 @@ def get_all_courts():
       all_courts.append(info)
 
   if mc:
-    mc.set('all_courts', all_courts, 43200)  # Cache for 12 hours
+    mc.set('all_courts', all_courts)
   return all_courts
 
 if __name__ == '__main__':
   import json
-  print json.dumps(get_all_courts())
+  import sys
+
+  force = False
+  if len(sys.argv) == 2 and sys.argv[1] == '-f':
+    force = True
+
+  print json.dumps(get_all_courts(force=force))
 
