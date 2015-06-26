@@ -5,6 +5,21 @@
   <link rel="stylesheet" type="text/css" href="/static/style.css"/>
 </head>
 <body>
+<h1>PACER court software versions</h1>
+<div class="intro">
+  <p>
+    This is a list of reported software versions for the electronic filing
+    (<a href="https://www.pacer.gov/">PACER</a>) systems of various US courts.
+  </p>
+  <p>
+    The records are
+    <a href="https://en.wikipedia.org/wiki/Web_scraping">scraped</a> daily. The
+    scraper and the source for this website was written by
+    <a href="http://twitter.com/audiodude">Travis Briggs</a> in Python and is
+    <a href="https://github.com/audiodude/court-version-scraper">available on
+    GitHub</a>. Pull requests welcome!
+  </p>
+</div>
   {% for name, group in all_courts.items() %}
     <table id="court-{{ group['id'] }}">
       <th class="court-type" colspan="2">{{ name }}</th>

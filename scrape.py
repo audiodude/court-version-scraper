@@ -32,6 +32,10 @@ def get_courts(root, marker_name):
         court_link = sibling.get('href')
 
 def get_all_courts(force=False):
+  import json
+  with open('courts.json') as f:
+    return json.load(f)
+
   all_courts = None
   if mc:
     all_courts = mc.get('all_courts')

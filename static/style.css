@@ -30,3 +30,8 @@ a {
 a:hover {
   text-decoration: underline;
 } 
+
+.intro {
+  font-family: Arial, sanserif;
+  width: 750px;
+}
