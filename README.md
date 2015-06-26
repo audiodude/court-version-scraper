@@ -15,4 +15,7 @@ Heroku scheduled job (`$ python scrape.py -f`) which runs daily to refresh the c
 
 The web server part of the project is written in [Flask](http://flask.pocoo.org/).
 
+### Legal
 Author: Travis Briggs (briggs.travis@gmail.com)
+
+Licensed under the MIT License, see LICENSE.md
