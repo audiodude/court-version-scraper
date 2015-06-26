@@ -2,26 +2,30 @@
 <html>
 <head>
   <title>PACER Court software versions</title>
+  <link rel="stylesheet" type="text/css" href="/static/style.css"/>
 </head>
 <body>
-  <table>
-    <tr>
-      <th>Court</th>
-      <th>Software version</th>
-    </tr>
-    {% for court in all_courts %}
+  {% for name, group in all_courts.items() %}
+    <table id="court-{{ group['id'] }}">
+      <th class="court-type" colspan="2">{{ name }}</th>
       <tr>
-        <td>
-          <a href ="{{ court['court_link'] }}">
-            {{ court['court'] }}
-          </a>
-        </td>
-        <td>
-          <a href="{{ court['info_link'] }}">
-            {{ court['software_version'] }}
-          </a>
-        </td>
+        <th>Court</th>
+        <th>Software version</th>
       </tr>
-    {% endfor %}
-  </table>
+      {% for court in group['courts'] %}
+        <tr>
+          <td class="court-name">
+            <a href ="{{ court['court_link'] }}">
+              {{ court['court'] }}
+            </a>
+          </td>
+          <td class="software-version">
+            <a href="{{ court['info_link'] }}">
+              {{ court['software_version'] }}
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endfor %}
 </body>

@@ -38,13 +38,17 @@ def get_all_courts(force=False):
   if all_courts and not force:
     return all_courts
 
-  COURT_MARKERS = ('APCTS', 'DCCTS', 'BKCTS')
+  COURT_MARKERS = (('U.S. Courts of Appeals', 'APCTS'),
+                   ('U.S. District Courts', 'DCCTS'),
+                   ('U.S. Bankruptcy Courts', 'BKCTS'))
 
   resp = requests.get('https://www.pacer.gov/psco/cgi-bin/links.pl')
   root = html.fromstring(resp.text)
 
-  all_courts = []
-  for marker in COURT_MARKERS:
+  all_courts = {}
+
+  for name, marker in COURT_MARKERS:
+    all_courts[name] = {'id': marker, 'courts': []}
     for info in get_courts(root, marker):
       info_resp = requests.get(info['info_link'])
       info_root = html.fromstring(info_resp.text)
@@ -52,7 +56,7 @@ def get_all_courts(force=False):
         '//td[contains(text(), "Software Version")]')[0]
       software_version = software_td.getnext().text
       info['software_version'] = software_version
-      all_courts.append(info)
+      all_courts[name]['courts'].append(info)
 
   if mc:
     mc.set('all_courts', all_courts)

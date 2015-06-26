@@ -1,0 +1,32 @@
+table { 
+  min-width: 525px;
+  margin: 40px auto;
+  border-collapse: collapse; 
+  border-spacing: 0;
+}
+
+td, th {
+  padding: 4px;
+  border: 1px solid #ccc;
+}
+
+th {
+  background: #f3f3f3;
+}
+
+.court-type {
+  background-color: #101060;
+  color: #fff;
+}
+
+tr:nth-child(even) td {
+  background: #F1F1F1;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+} 
