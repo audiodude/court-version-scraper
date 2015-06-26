@@ -11,7 +11,11 @@
     </tr>
     {% for court in all_courts %}
       <tr>
-        <td>{{ court['court'] }}</td>
+        <td>
+          <a href ="{{ court['court_link'] }}">
+            {{ court['court'] }}
+          </a>
+        </td>
         <td>
           <a href="{{ court['info_link'] }}">
             {{ court['software_version'] }}

@@ -17,13 +17,19 @@ def get_courts(root, marker_name):
   marker_anchors = root.xpath('//a[@name="%s"]' % marker_name)
   for marker in marker_anchors:
     court = None
+    court_link = None
     for sibling in marker.itersiblings():
       if (court and sibling.tag == 'a' and
           'courtinfo' in sibling.get('href')):
-        yield {'court': court, 'info_link': sibling.get('href')}
+        yield {
+          'court': court,
+          'court_link': court_link,
+          'info_link': sibling.get('href')
+        }
         court = None
       elif not court and sibling.tag == 'a':
         court = sibling.text
+        court_link = sibling.get('href')
 
 def get_all_courts():
   all_courts = None
