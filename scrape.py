@@ -5,8 +5,12 @@ import pylibmc
 import requests
 
 try:
-  mc = pylibmc.Client([os.environ['MEMCACHIER_SERVERS']], binary=True)
-except KeyError:
+  servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
+  user = os.environ.get('MEMCACHIER_USERNAME', '')
+  passwd = os.environ.get('MEMCACHIER_PASSWORD', '')
+  mc = pylibmc.Client(servers, binary=True,
+                      username=user, password=passwd)
+except:
   mc = None
 
 def get_courts(root, marker_name):
