@@ -15,6 +15,18 @@ Heroku scheduled job (`$ python scrape.py -f`) which runs daily to refresh the c
 
 The web server part of the project is written in the Python [Flask](http://flask.pocoo.org/) web framework.
 
+### Installation
+
+First, you need `memcached` and its dev libs. 
+
+On Ubuntu, you can do:
+
+    sudo apt-get install libmemcached-dev
+
+Then:
+
+    pip -r requirements.txt
+
 ### Legal
 Author: Travis Briggs (briggs.travis@gmail.com)
 
