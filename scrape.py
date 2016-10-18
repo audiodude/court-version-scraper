@@ -4,11 +4,13 @@ from lxml import html
 import pylibmc
 import requests
 
+mc = None
 try:
   servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
   user = os.environ.get('MEMCACHIER_USERNAME', '')
   passwd = os.environ.get('MEMCACHIER_PASSWORD', '')
-  mc = pylibmc.Client(servers, binary=True,
+  if servers and user and passwd:
+    mc = pylibmc.Client(servers, binary=True,
                       username=user, password=passwd)
 except:
   mc = None
@@ -52,12 +54,20 @@ def get_all_courts(force=False):
     for info in get_courts(root, marker):
       info_resp = requests.get(info['info_link'])
       info_root = html.fromstring(info_resp.text)
+      
       software_td = info_root.xpath(
         '//td[contains(text(), "Software Version")]')[0]
       software_version = software_td.getnext().text
       info['software_version'] = software_version
+      
+      go_live_td = info_root.xpath(
+        '//td[contains(text(), "ECF Go Live Date")]')[0]
+      software_go_live = go_live_td.getnext().text
+      info['software_go_live'] = software_go_live
+      
       all_courts[name]['courts'].append(info)
-
+      break
+      
   if mc:
     mc.set('all_courts', all_courts)
   return all_courts
@@ -70,5 +80,5 @@ if __name__ == '__main__':
   if len(sys.argv) == 2 and sys.argv[1] == '-f':
     force = True
 
-  print json.dumps(get_all_courts(force=force))
+  print(json.dumps(get_all_courts(force=force)))
 

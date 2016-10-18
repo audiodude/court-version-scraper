@@ -25,10 +25,11 @@
 </div>
   {% for name, group in all_courts.items() %}
     <table id="court-{{ group['id'] }}">
-      <th class="court-type" colspan="2">{{ name }}</th>
+      <th class="court-type" colspan="3">{{ name }}</th>
       <tr>
         <th>Court</th>
         <th>Software version</th>
+        <th>Software Go Live Date</th>
       </tr>
       {% for court in group['courts'] %}
         <tr>
@@ -40,6 +41,11 @@
           <td class="software-version">
             <a href="{{ court['info_link'] }}">
               {{ court['software_version'] }}
+            </a>
+          </td>
+          <td class="software-go-live">
+            <a href="{{ court['info_link'] }}">
+              {{ court['software_go_live'] }}
             </a>
           </td>
         </tr>
