@@ -66,7 +66,6 @@ def get_all_courts(force=False):
       info['software_go_live'] = software_go_live
       
       all_courts[name]['courts'].append(info)
-      break
       
   if mc:
     mc.set('all_courts', all_courts)
