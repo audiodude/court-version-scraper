@@ -1,5 +1,6 @@
 table { 
   min-width: 525px;
+  max-width: 80%;
   margin: 40px auto;
   border-collapse: collapse; 
   border-spacing: 0;
@@ -8,6 +9,7 @@ table {
 td, th {
   padding: 4px;
   border: 1px solid #ccc;
+  max-width: 30%;
 }
 
 th {

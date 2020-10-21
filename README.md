@@ -17,15 +17,18 @@ The web server part of the project is written in the Python [Flask](http://flask
 
 ### Installation
 
-First, you need `memcached` and its dev libs. 
+First:
 
-On Ubuntu, you can do:
-
-    sudo apt-get install libmemcached-dev
+    pip -r requirements.txt
 
 Then:
 
-    pip -r requirements.txt
+    FLASK_DEBUG=true FLASK_APP=app.py flask run
+
+If you have MEMCACHIER credentials, you can provide them to let your development server connect
+to the production dataset:
+
+    MEMCACHIER_PASSWORD=1234 MEMCACHIER_SERVERS=foobar.memcachier.com:11211 MEMCACHIER_USERNAME=1234 FLASK_DEBUG=true FLASK_APP=app.py flask run
 
 ### Legal
 Author: Travis Briggs (briggs.travis@gmail.com)

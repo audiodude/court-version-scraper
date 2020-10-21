@@ -39,14 +39,22 @@
             </a>
           </td>
           <td class="software-version">
+            {% if court['software_version'] %}
             <a href="{{ court['info_link'] }}">
               {{ court['software_version'] }}
             </a>
+            {% else %}
+            --
+            {% endif %}
           </td>
           <td class="software-go-live">
+            {% if court['software_go_live'] %}
             <a href="{{ court['info_link'] }}">
               {{ court['software_go_live'] }}
             </a>
+            {% else %}
+            --
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
