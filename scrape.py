@@ -8,18 +8,18 @@ HEADERS = {
     'User-Agent': 'court-version-scraper (2.0) <audiodude@gmail.com>'
 }
 
-mc = None
-try:
-  servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
-  user = os.environ.get('MEMCACHIER_USERNAME', '')
-  passwd = os.environ.get('MEMCACHIER_PASSWORD', '')
-  if servers and user and passwd:
-    mc = pylibmc.Client(servers, binary=True,
-                      username=user, password=passwd)
-except:
-  mc = None
-
 def get_all_courts(force=False):
+  mc = None
+  try:
+    servers = os.environ.get('MEMCACHIER_SERVERS', '').split(',')
+    user = os.environ.get('MEMCACHIER_USERNAME', '')
+    passwd = os.environ.get('MEMCACHIER_PASSWORD', '')
+    if servers and user and passwd:
+      mc = pylibmc.Client(servers, binary=True,
+                        username=user, password=passwd)
+  except:
+    mc = None
+
   all_courts = None
   if mc:
     all_courts = mc.get('all_courts')
@@ -88,7 +88,7 @@ def get_all_courts(force=False):
     all_courts[name]['courts'].append(info)
       
   if mc:
-    mc.set('all_courts', all_courts)
+    mc.set('all_courts', all_courts, 3 * 24 * 60 * 60)
   return all_courts
 
 if __name__ == '__main__':
