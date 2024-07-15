@@ -12,7 +12,7 @@ lxml==4.9.3
 MarkupSafe==2.1.1
 pylibmc==1.6.3
 requests==2.32.0
-setuptools==69.0.3
+setuptools==70.0.0
 urllib3==1.26.19
 Werkzeug==3.0.3
 zipp==3.19.1
