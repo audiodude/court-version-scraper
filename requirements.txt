@@ -14,6 +14,6 @@ packaging==24.2
 pylibmc==1.6.3
 requests==2.32.4
 setuptools==78.1.1
-urllib3==1.26.19
+urllib3==2.5.0
 Werkzeug==3.0.6
 zipp==3.19.1
