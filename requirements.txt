@@ -4,7 +4,7 @@ charset-normalizer==2.1.0
 click==8.1.3
 Flask==3.1.3
 gunicorn==23.0.0
-idna==3.7
+idna==3.15
 importlib-metadata==6.6.0
 itsdangerous==2.1.2
 Jinja2==3.1.6
@@ -12,8 +12,8 @@ lxml==4.9.3
 MarkupSafe==2.1.1
 packaging==24.2
 pylibmc==1.6.3
-requests==2.32.4
+requests==2.33.0
 setuptools==78.1.1
 urllib3==2.7.0
-Werkzeug==3.1.5
+Werkzeug==3.1.6
 zipp==3.19.1
