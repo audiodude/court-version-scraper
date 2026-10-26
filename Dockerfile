@@ -13,5 +13,5 @@ COPY . /app
 
 EXPOSE 8080
 
-ENV GUNICORN_CMD_ARGS="--bind=0.0.0.0:8080 --log-file=-"
+ENV GUNICORN_CMD_ARGS="--bind=0.0.0.0:8080 --log-file=- --timeout=120"
 CMD ["gunicorn", "app:app"]

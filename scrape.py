@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 import os
 
 from lxml import html
@@ -7,6 +8,35 @@ import requests
 HEADERS = {
     'User-Agent': 'court-version-scraper (2.0) <audiodude@gmail.com>'
 }
+TIMEOUT = 20
+WORKERS = 10
+
+def fetch_court_info(info):
+  info_resp = requests.get(info['info_link'], headers=HEADERS, timeout=TIMEOUT)
+  info_root = html.fromstring(info_resp.text)
+
+  software_td = info_root.xpath(
+    '//td[contains(text(), "Software Version")]')
+  if software_td:
+    software_td = software_td[0]
+    info['software_version'] = software_td.getnext().text
+  else:
+    info['software_version'] = None
+
+  go_live_td = info_root.xpath(
+    '//td[contains(text(), "ECF Go Live Date")]')
+  if go_live_td:
+    go_live_td = go_live_td[0]
+    info['software_go_live'] = go_live_td.getnext().text
+  else:
+    info['software_go_live'] = None
+
+  court_header_div = info_root.xpath(
+    '//i[contains(@class, "fa-globe-americas")]')
+  if court_header_div:
+    court_header_div = court_header_div[0].getparent().getnext()
+    info['court_link'] = court_header_div.find('.//a').get('href')
+  return info
 
 def get_all_courts(force=False):
   mc = None
@@ -36,13 +66,15 @@ def get_all_courts(force=False):
                    ('U.S. Bankruptcy Courts', 'BKCTS'))
 
   resp = requests.get('https://pacer.uscourts.gov/file-case/court-cmecf-lookup',
-                      headers=HEADERS)
+                      headers=HEADERS, timeout=TIMEOUT)
   root = html.fromstring(resp.text)
 
   all_courts = {}
 
   for tag, (name, marker) in name_to_marker.items():
     all_courts[name] = {'id': marker, 'courts': []}
+
+  pending = []
 
   for row in root.iterfind('.//tr'):
     court_type = None
@@ -60,33 +92,13 @@ def get_all_courts(force=False):
     if marker is None:
       continue
 
-    info_resp = requests.get(info['info_link'], headers=HEADERS)
-    info_root = html.fromstring(info_resp.text)
+    pending.append((name, info))
 
-    software_td = info_root.xpath(
-      '//td[contains(text(), "Software Version")]')
-    if software_td:
-      software_td = software_td[0]
-      info['software_version'] = software_td.getnext().text
-    else:
-      info['software_version'] = None
+  with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+    infos = pool.map(fetch_court_info, [info for _, info in pending])
+    for (name, _), info in zip(pending, infos):
+      all_courts[name]['courts'].append(info)
 
-    go_live_td = info_root.xpath(
-      '//td[contains(text(), "ECF Go Live Date")]')
-    if go_live_td:
-      go_live_td = go_live_td[0]
-      info['software_go_live'] = go_live_td.getnext().text
-    else:
-      info['software_go_live'] = None
-
-    court_header_div = info_root.xpath(
-      '//i[contains(@class, "fa-globe-americas")]')
-    if court_header_div:
-      court_header_div = court_header_div[0].getparent().getnext()
-      info['court_link'] = court_header_div.find('.//a').get('href')
-
-    all_courts[name]['courts'].append(info)
-      
   if mc:
     mc.set('all_courts', all_courts, 3 * 24 * 60 * 60)
   return all_courts
