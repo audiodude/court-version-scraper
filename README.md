@@ -7,11 +7,10 @@ This app is currently deployed on Fly.io: https://court-version-scraper.fly.dev/
 It currently only grabs the court's ECF version, but could easily be extended to grab more information.
 
 The data that is used to generate the web page can also be obtained in JSON format by running: `$ python scrape.py`.
-It takes about 3-4 minutes to download all of the relevant court pages. This JSON data is also available at the URL /courts.json (so for the Heroku deploy, http://court-version-scraper.herokuapp.com/courts.json)
+Court pages are fetched in parallel, so a full scrape takes about 10 seconds. This JSON data is also available at the URL /courts.json (https://court-version-scraper.fly.dev/courts.json).
 
-Because it takes so long to download the pages, the production version of this application uses a hosted
-[memcached](http://memcached.org/) instance to store the scraped data. This data is cached indefinitely. There is a
-Heroku scheduled job (`$ python scrape.py -f`) which runs daily to refresh the contents of the cache.
+The production version of this application stores the scraped data in a hosted [memcached](http://memcached.org/)
+instance (MemCachier) for 3 days. When the cache is empty, the next request re-scrapes and refills it.
 
 The web server part of the project is written in the Python [Flask](https://flask.palletsprojects.com/) web framework.
 
